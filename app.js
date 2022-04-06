@@ -17,12 +17,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 //designating that the static pages are in the "public folder."
 app.use(express.static("/public"));
 
+let posts = [];
+
 //target the root, creating a route, call back function
 app.get("/", function(req,res){
   //render .ejs
   //key variable pair. The key is the variable in the ejs file and the variable is the content to be submitted
   //key has to match the variable in the ejs
   res.render('home', {startingContent:homeStartingContent});
+  console.log(posts);
 });
 
 app.get("/about", function(req, res){
@@ -38,9 +41,15 @@ app.get("/compose", function(req, res){
 })
 
 app.post("/compose", function(req, res){
-  console.log(req.body.postTitle);
+  const post = {
+    title: req.body.postTitle,
+    content: req.body.postBody
+  };
+  //push the post to the posts array
+  posts.push(post);
+  //redirect to root after the post is submitted
+  res.redirect("/");
 })
-
 
 
 
